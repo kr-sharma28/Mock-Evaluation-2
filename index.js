@@ -149,4 +149,31 @@ let loggerMiddleware = (req, res, next) => {
   };
   
   module.exports = loggerMiddleware;
+
+//Test Example
+
+let request = require('supertest');
+let app = require('../app');
+
+describe('POST /login', () => {
+  it('should return a JWT token on successful login', async () => {
+    let res = await request(app)
+      .post('/login')
+      .send({ email: 'test@example.com', password: 'password123' });
+    
+    expect(res.status).toBe(200);
+    expect(res.body.token).toBeDefined();
+  });
+});
+
+//Error Handling Middleware
+
+let errorHandler = (err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).json({ message: err.message });
+  };
+  
+  module.exports = errorHandler;
+  
+  
   
